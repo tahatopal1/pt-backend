@@ -4,6 +4,7 @@ import com.project.pt.dto.BaseEntityDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -13,8 +14,13 @@ import java.util.Date;
 @SuperBuilder
 public class PersistableAppointmentDTO extends BaseEntityDTO{
 
+    @NotNull
     private Date appointmentDate;
-    private int hourSlot;
-    private String username;
+
+    @NotNull
+    private String customer;
+
+    @NotNull
+    private String trainer;
 
 }

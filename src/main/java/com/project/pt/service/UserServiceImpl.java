@@ -8,8 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        User user = Optional.ofNullable(userRepository.findByUsernameQuery(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User details not found for the user: " + username));
         return new SecurityCustomer(user);
     }
@@ -36,8 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers(int page, int offset) {
-        return userRepository.findAll(PageRequest.of(page, offset)).getContent();
+    public List<User> getAllUsers(int page, int size) {
+        return userRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 
     @Override
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
+        return Optional.ofNullable(userRepository.findByUsernameQuery(username))
                 .orElseThrow(() -> new RuntimeException("A problem has occurred getting user information by username: " + username));
     }
 }

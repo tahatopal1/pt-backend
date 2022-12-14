@@ -1,5 +1,6 @@
 package com.project.pt.facade;
 
+import com.project.pt.dto.CustomerAssignmentDTO;
 import com.project.pt.dto.user.PersistableUserDTO;
 import com.project.pt.dto.user.ReadableUserDTO;
 import com.project.pt.mapper.user.PersistableUserToUserMapper;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -53,18 +55,9 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public void assignTrainerToUser(String username) {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userService.getUserByUsername(currentUsername);
-        User trainer = userService.getUserByUsername(username);
-        currentUser.addTrainer(trainer);
-    }
-
-    @Override
-    public void deleteTrainerFromTrainerList(String username) {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userService.getUserByUsername(currentUsername);
-        User trainer = userService.getUserByUsername(username);
-        currentUser.removeTrainer(trainer);
+    public void updateUser(PersistableUserDTO persistableUserDTO) {
+        userService.getUserByUsername(persistableUserDTO.getUsername());
+        User user = mapper.map(persistableUserDTO);
+        userService.saveUser(user);
     }
 }

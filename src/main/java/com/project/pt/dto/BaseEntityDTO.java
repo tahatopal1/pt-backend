@@ -15,6 +15,7 @@ import java.util.Date;
 @SuperBuilder
 public class BaseEntityDTO {
 
+    private String id;
     private Date createdDate;
     private Date lastModifiedDate;
 

@@ -31,7 +31,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
                     .setIssuer("Eazy Bank")
                     .setSubject("JWT Token")
                     .claim("username", authentication.getName())
-                    .claim("authorities", populateAuthorities(authentication.getAuthorities()))
+                    //.claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(new Date().getTime() + 300000000))
                     .signWith(key)

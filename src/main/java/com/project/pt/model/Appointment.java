@@ -1,6 +1,7 @@
 package com.project.pt.model;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 public class Appointment extends BaseEntity{
 
     @Temporal(TemporalType.DATE)

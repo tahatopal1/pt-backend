@@ -1,6 +1,8 @@
-package com.project.pt.controller;
+package com.project.pt.controller.admin;
 
+import com.project.pt.dto.CustomerAssignmentDTO;
 import com.project.pt.dto.ErrorDTO;
+import com.project.pt.facade.TrainerAssignmentFacade;
 import com.project.pt.facade.UserFacade;
 import com.project.pt.utils.UtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,32 +10,37 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping("/api/trainer")
-public class TrainerController {
+@RequestMapping("/api/admin/trainer")
+public class TrainerAdminController {
 
     @Autowired
     private UserFacade userFacade;
 
     @Autowired
+    private TrainerAssignmentFacade trainerAssignmentFacade;
+
+    @Autowired
     private UtilsService utilsService;
 
-    @PostMapping("/{username}")
-    public ResponseEntity addTrainerToUser(@PathVariable String username){
+    @PostMapping
+    public ResponseEntity assignCustomer(@RequestBody @Valid CustomerAssignmentDTO assignmentDTO){
         try{
-            userFacade.assignTrainerToUser(username);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            trainerAssignmentFacade.assignTrainerToUser(assignmentDTO);
+            return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception e){
             ErrorDTO error = utilsService.generateError(e);
             return new ResponseEntity<ErrorDTO>(error, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping("/{username}")
-    public ResponseEntity deleteTrainer(@PathVariable String username){
+    @DeleteMapping
+    public ResponseEntity deleteTrainer(@RequestBody @Valid CustomerAssignmentDTO assignmentDTO){
         try{
-            userFacade.deleteTrainerFromTrainerList(username);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            trainerAssignmentFacade.deleteTrainerFromTrainerList(assignmentDTO);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (Exception e){
             ErrorDTO error = utilsService.generateError(e);
             return new ResponseEntity<ErrorDTO>(error, HttpStatus.BAD_REQUEST);

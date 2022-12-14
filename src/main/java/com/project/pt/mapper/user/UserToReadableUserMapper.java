@@ -7,6 +7,9 @@ import com.project.pt.model.Address;
 import com.project.pt.model.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+import java.util.UUID;
+
 @Component
 public class UserToReadableUserMapper implements CustomMapper<User, ReadableUserDTO> {
 
@@ -14,12 +17,16 @@ public class UserToReadableUserMapper implements CustomMapper<User, ReadableUser
     public ReadableUserDTO map(User user) {
         AddressDTO address = generateAddress(user);
         return ReadableUserDTO.builder()
+                .id(user.getId().toString())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .username(user.getUsername())
-                .birthYear(user.getBirthYear())
+                .birthDate(user.getBirthDate())
+                .phoneNumber(user.getPhoneNumber())
                 .gender(user.getGender())
-                .type(user.getType())
+                .createdDate(user.getCreatedDate())
+                .lastModifiedDate(user.getLastModifiedDate())
+                .phoneNumber(user.getPhoneNumber())
                 .address(address)
                 .build();
     }
@@ -32,7 +39,6 @@ public class UserToReadableUserMapper implements CustomMapper<User, ReadableUser
                 .neighbourhood(address.getNeighbourhood())
                 .street(address.getStreet())
                 .no(address.getNo())
-                .phoneNumber(address.getPhoneNumber())
                 .build();
     }
 }

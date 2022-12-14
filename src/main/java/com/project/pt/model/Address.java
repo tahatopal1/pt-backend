@@ -18,6 +18,5 @@ public class Address{
     private String neighbourhood;
     private String street;
     private String no;
-    private String phoneNumber;
 
 }

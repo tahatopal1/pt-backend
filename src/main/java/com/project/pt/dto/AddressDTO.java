@@ -32,8 +32,4 @@ public class AddressDTO {
     @Size(min = 3, max = 7, message = "No must be between 3 and 7 characters")
     private String no;
 
-    @NotNull(message = "Phone number cannot be null")
-    @Size(min = 3, max = 20, message = "Phone number must be between 3 and 20 characters")
-    private String phoneNumber;
-
 }

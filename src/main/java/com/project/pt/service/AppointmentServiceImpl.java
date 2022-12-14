@@ -4,9 +4,11 @@ import com.project.pt.model.Appointment;
 import com.project.pt.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -21,14 +23,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment getAppointment(UUID uuid) {
-        return appointmentRepository.getReferenceById(uuid);
+    public Appointment getAppointment(UUID uuid) throws Exception {
+        Appointment appointment = appointmentRepository.getReferenceById(uuid);
+        if (Objects.isNull(appointment)){
+            throw new Exception("There is no such appointment with code: " + uuid.toString());
+        }
+        return appointment;
     }
 
     @Override
-    public List<Appointment> getAllAppointments(int page, int size) {
-        return appointmentRepository.findAll(PageRequest.of(page, size)).getContent();
+    public List<Appointment> getAllAppointments(int page, int size, String field, boolean desc) {
+        PageRequest pr = desc ? PageRequest.of(page, size, Sort.by(field).descending()) : PageRequest.of(page, size, Sort.by(field));
+        return appointmentRepository.findAll(pr).getContent();
     }
+
 
     @Override
     public List<Appointment> getAppointmentsByCustomer(String username, int page, int size) {
@@ -36,8 +44,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> getAppointmentsByTrainer(String username, int page, int size) {
-        return appointmentRepository.getAppointmentsByTrainer(username, PageRequest.of(page, size));
+    public List<Appointment> getAppointmentByCustomerSorted(String username, int page, int size, String field, boolean desc) {
+        PageRequest pr = desc ? PageRequest.of(page, size, Sort.by(field).descending()) : PageRequest.of(page, size, Sort.by(field));
+        return appointmentRepository.getAppointmentsByCustomer(username, pr);
     }
 
     @Override

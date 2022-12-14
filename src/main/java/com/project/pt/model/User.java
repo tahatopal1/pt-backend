@@ -6,10 +6,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "USER")
@@ -26,13 +25,13 @@ public class User extends BaseEntity{
     @Column(unique = true)
     private String username;
     private String password;
-    private String birthYear;
+    private String phoneNumber;
+
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
-
-    @Enumerated(EnumType.STRING)
-    private Type type;
 
     @Embedded
     private Address address;
@@ -61,29 +60,29 @@ public class User extends BaseEntity{
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_AUTHORITY",
-            joinColumns={@JoinColumn(name="authority_id", referencedColumnName="id")},
-            inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+            joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="authority_id", referencedColumnName="id")}
     )
-    private Set<Authority> authorities;
+    private Set<Authority> authorities = new HashSet<>();
 
     public void addTrainer(User user){
         trainers.add(user);
-        user.getCustomers().add(this);
+//        user.getCustomers().add(this);
     }
 
     public void removeTrainer(User user){
         trainers.remove(user);
-        user.getCustomers().remove(this);
+//        user.getCustomers().remove(this);
     }
 
     public void addAuthority(Authority authority){
         authorities.add(authority);
-        authority.getUsers().add(this);
+//        authority.getUsers().add(this);
     }
 
     public void removeAuthority(Authority authority){
         authorities.remove(authority);
-        authority.getUsers().remove(authority);
+//        authority.getUsers().remove(authority);
     }
 
     @Override

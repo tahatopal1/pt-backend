@@ -1,5 +1,6 @@
 package com.project.pt.facade;
 
+import com.project.pt.dto.CustomerAssignmentDTO;
 import com.project.pt.dto.user.PersistableUserDTO;
 import com.project.pt.dto.user.ReadableUserDTO;
 
@@ -15,8 +16,6 @@ public interface UserFacade {
 
     void deleteUser(String id);
 
-    void assignTrainerToUser(String username);
-
-    void deleteTrainerFromTrainerList(String username);
+    void updateUser(PersistableUserDTO persistableUserDTO);
 
 }

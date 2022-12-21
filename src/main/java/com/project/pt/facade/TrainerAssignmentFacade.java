@@ -4,8 +4,12 @@ import com.project.pt.dto.CustomerAssignmentDTO;
 
 public interface TrainerAssignmentFacade {
 
-    void assignTrainerToUser(CustomerAssignmentDTO customerAssignmentDTO);
+    void assignTrainerToCustomer(CustomerAssignmentDTO customerAssignmentDTO);
 
-    void deleteTrainerFromTrainerList(CustomerAssignmentDTO customerAssignmentDTO);
+    void assignTrainerToCustomer(String trainer);
+
+    void removeTrainerFromCustomer(CustomerAssignmentDTO customerAssignmentDTO);
+
+    void removeTrainerFromCustomer(String trainer);
 
 }

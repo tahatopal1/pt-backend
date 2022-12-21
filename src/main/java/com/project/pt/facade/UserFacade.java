@@ -1,6 +1,5 @@
 package com.project.pt.facade;
 
-import com.project.pt.dto.CustomerAssignmentDTO;
 import com.project.pt.dto.user.PersistableUserDTO;
 import com.project.pt.dto.user.ReadableUserDTO;
 
@@ -18,4 +17,9 @@ public interface UserFacade {
 
     void updateUser(PersistableUserDTO persistableUserDTO);
 
+    ReadableUserDTO getUserByUsername(String username);
+
+    List<ReadableUserDTO> findAllTrainers(String authority, int page, int offse);
+
+    List<ReadableUserDTO> findAllNonAdmins(int page, int offset);
 }

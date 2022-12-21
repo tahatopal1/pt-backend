@@ -4,6 +4,7 @@ import com.project.pt.dto.CustomerAssignmentDTO;
 import com.project.pt.model.User;
 import com.project.pt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,20 +14,38 @@ public class TrainerAssignmentFacadeImpl implements TrainerAssignmentFacade {
     private UserService userService;
 
     @Override
-    public void assignTrainerToUser(CustomerAssignmentDTO customerAssignmentDTO) {
-//        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userService.getUserByUsername(customerAssignmentDTO.getCustomer());
-        User trainer = userService.getUserByUsername(customerAssignmentDTO.getTrainer());
-        currentUser.addTrainer(trainer);
-        userService.saveUser(currentUser);
+    public void assignTrainerToCustomer(CustomerAssignmentDTO customerAssignmentDTO) {
+        assignTrainer(customerAssignmentDTO.getTrainer(), customerAssignmentDTO.getCustomer());
     }
 
     @Override
-    public void deleteTrainerFromTrainerList(CustomerAssignmentDTO customerAssignmentDTO) {
-//        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userService.getUserByUsername(customerAssignmentDTO.getCustomer());
-        User trainer = userService.getUserByUsername(customerAssignmentDTO.getTrainer());
-        currentUser.removeTrainer(trainer);
-        userService.saveUser(currentUser);
+    public void assignTrainerToCustomer(String trainerUsername) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        assignTrainer(trainerUsername, currentUsername);
+    }
+
+    @Override
+    public void removeTrainerFromCustomer(CustomerAssignmentDTO customerAssignmentDTO) {
+        discardTrainer(customerAssignmentDTO.getTrainer(), customerAssignmentDTO.getCustomer());
+    }
+
+    @Override
+    public void removeTrainerFromCustomer(String trainerUsername) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        discardTrainer(trainerUsername, currentUsername);
+    }
+
+    private void discardTrainer(String trainerUsername, String currentUsername) {
+        User customer = userService.getUserByUsername(currentUsername);
+        User trainer = userService.getUserByUsername(trainerUsername);
+        customer.removeTrainer(trainer);
+        userService.saveUser(customer);
+    }
+
+    private void assignTrainer(String trainerUsername, String currentUsername) {
+        User customer = userService.getUserByUsername(currentUsername);
+        User trainer = userService.getUserByUsername(trainerUsername);
+        customer.addTrainer(trainer);
+        userService.saveUser(customer);
     }
 }

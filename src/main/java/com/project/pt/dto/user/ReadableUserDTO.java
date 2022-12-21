@@ -9,6 +9,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -24,6 +25,7 @@ public class ReadableUserDTO extends BaseEntityDTO {
     private String username;
     private Gender gender;
     private String phoneNumber;
+    private Set<String> authorities;
     private AddressDTO address;
     private Set<User> users;
 

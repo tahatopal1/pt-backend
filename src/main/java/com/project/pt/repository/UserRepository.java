@@ -16,6 +16,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.authorities a WHERE u.username = ?1")
     User findByUsernameQuery(String username);
 
+    @Query("SELECT u FROM User u INNER JOIN FETCH u.authorities a WHERE a.name = ?1")
+    List<User> findAllTrainers(String authority, Pageable pageable);
+
+    @Query("SELECT u FROM User u INNER JOIN FETCH u.authorities a WHERE a.name != 'ADMIN'")
+    List<User> findAllNonAdmins(Pageable pageable);
+
     Optional<User> findByUsername(String username);
 
     @Override

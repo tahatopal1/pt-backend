@@ -28,7 +28,7 @@ public class TrainerAdminController {
     @PostMapping
     public ResponseEntity assignCustomer(@RequestBody @Valid CustomerAssignmentDTO assignmentDTO){
         try{
-            trainerAssignmentFacade.assignTrainerToUser(assignmentDTO);
+            trainerAssignmentFacade.assignTrainerToCustomer(assignmentDTO);
             return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception e){
             ErrorDTO error = utilsService.generateError(e);
@@ -39,7 +39,7 @@ public class TrainerAdminController {
     @DeleteMapping
     public ResponseEntity deleteTrainer(@RequestBody @Valid CustomerAssignmentDTO assignmentDTO){
         try{
-            trainerAssignmentFacade.deleteTrainerFromTrainerList(assignmentDTO);
+            trainerAssignmentFacade.removeTrainerFromCustomer(assignmentDTO);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (Exception e){
             ErrorDTO error = utilsService.generateError(e);

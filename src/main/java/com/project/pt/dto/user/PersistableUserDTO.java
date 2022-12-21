@@ -59,7 +59,4 @@ public class PersistableUserDTO extends BaseEntityDTO {
     @Builder.Default
     private Gender gender = Gender.MALE;
 
-    @Builder.Default
-    private Type type = Type.CUSTOMER;
-
 }

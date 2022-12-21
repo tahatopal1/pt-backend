@@ -5,6 +5,7 @@ import com.project.pt.model.nonmapped.SecurityCustomer;
 import com.project.pt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAllNonAdmins(Pageable pageable) {
+        return userRepository.findAllNonAdmins(pageable);
+    }
+
+    @Override
     public void deleteUser(UUID uuid) {
         userRepository.deleteById(uuid);
     }
@@ -51,5 +57,10 @@ public class UserServiceImpl implements UserService {
     public User getUserByUsername(String username) {
         return Optional.ofNullable(userRepository.findByUsernameQuery(username))
                 .orElseThrow(() -> new RuntimeException("A problem has occurred getting user information by username: " + username));
+    }
+
+    @Override
+    public List<User> findAllTrainers(String authority, Pageable pageable) {
+        return userRepository.findAllTrainers(authority, pageable);
     }
 }

@@ -4,11 +4,13 @@ import com.project.pt.dto.AddressDTO;
 import com.project.pt.dto.user.ReadableUserDTO;
 import com.project.pt.mapper.CustomMapper;
 import com.project.pt.model.Address;
+import com.project.pt.model.Authority;
 import com.project.pt.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class UserToReadableUserMapper implements CustomMapper<User, ReadableUserDTO> {
@@ -27,6 +29,10 @@ public class UserToReadableUserMapper implements CustomMapper<User, ReadableUser
                 .createdDate(user.getCreatedDate())
                 .lastModifiedDate(user.getLastModifiedDate())
                 .phoneNumber(user.getPhoneNumber())
+                .authorities(user.getAuthorities()
+                        .stream()
+                        .map(Authority::getName)
+                        .collect(Collectors.toSet()))
                 .address(address)
                 .build();
     }

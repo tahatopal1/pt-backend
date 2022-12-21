@@ -1,6 +1,5 @@
 package com.project.pt.facade;
 
-import com.project.pt.dto.CustomerAssignmentDTO;
 import com.project.pt.dto.user.PersistableUserDTO;
 import com.project.pt.dto.user.ReadableUserDTO;
 import com.project.pt.mapper.user.PersistableUserToUserMapper;
@@ -8,11 +7,10 @@ import com.project.pt.mapper.user.UserToReadableUserMapper;
 import com.project.pt.model.User;
 import com.project.pt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -59,5 +57,29 @@ public class UserFacadeImpl implements UserFacade {
         userService.getUserByUsername(persistableUserDTO.getUsername());
         User user = mapper.map(persistableUserDTO);
         userService.saveUser(user);
+    }
+
+    @Override
+    public ReadableUserDTO getUserByUsername(String username) {
+        User user = userService.getUserByUsername(username);
+        return readableUserMapper.map(user);
+    }
+
+    @Override
+    public List<ReadableUserDTO> findAllTrainers(String authority, int page, int offset) {
+        PageRequest pageRequest = PageRequest.of(page, offset);
+         return userService.findAllTrainers(authority, pageRequest)
+                 .stream()
+                 .map(readableUserMapper::map)
+                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReadableUserDTO> findAllNonAdmins(int page, int offset) {
+        PageRequest pageRequest = PageRequest.of(page, offset);
+        return userService.getAllNonAdmins(pageRequest)
+                .stream()
+                .map(readableUserMapper::map)
+                .collect(Collectors.toList());
     }
 }

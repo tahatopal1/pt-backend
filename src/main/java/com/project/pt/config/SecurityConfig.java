@@ -46,15 +46,15 @@ public class SecurityConfig {
                         return config;
                     }
                 }).and().csrf().disable()
-//                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
-//                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((auth) -> auth
-                                .anyRequest().permitAll()
-//                                .antMatchers("/signup").permitAll()
-//                                .antMatchers("/login").permitAll()
-//                                .anyRequest().authenticated()
-/*                        .antMatchers("/myAccount").hasRole("USER")
-                        .antMatchers("/myBalance").hasAnyRole("USER","ADMIN")
+//                                .anyRequest().permitAll()
+                                .antMatchers("/signup").permitAll()
+                                .antMatchers("/login").authenticated()
+                                .antMatchers("/api/admin/**").hasAuthority("ADMIN")
+                                .antMatchers("/api/user/**").hasAnyAuthority("CUSTOMER", "TRAINER")
+/*                        .antMatchers("/myBalance").hasAnyRole("USER","ADMIN")
                         .antMatchers("/myLoans").hasRole("ROOT")
                         .antMatchers( "/myCards").hasAnyRole("USER","ADMIN")
                         .antMatchers( "/user").authenticated()

@@ -48,7 +48,7 @@ public class UserAdminController {
     @GetMapping
     public ResponseEntity getAllUsers(@RequestParam Integer page, @RequestParam Integer size){
         try{
-            List<ReadableUserDTO> users = userFacade.getAllUsers(page, size);
+            List<ReadableUserDTO> users = userFacade.findAllNonAdmins(page, size);
             return new ResponseEntity<List<ReadableUserDTO>>(users, HttpStatus.OK);
         }catch (Exception e){
             ErrorDTO error = utilsService.generateError(e);
